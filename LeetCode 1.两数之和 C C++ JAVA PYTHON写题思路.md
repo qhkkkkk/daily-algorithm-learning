@@ -1132,3 +1132,1351 @@ return {};
 ```
 
 ---
+
+# LeetCode 1：Two Sum —— C++ 哈希表学习总结
+
+## 一、从 C 暴力法到 C++ 哈希法
+
+Two Sum 最开始使用的是暴力法：
+
+```text
+固定 nums[i]
+    ↓
+遍历后面的 nums[j]
+    ↓
+判断 nums[i] + nums[j] == target
+```
+
+时间复杂度：
+
+```text
+O(n²)
+```
+
+后来学习 C 哈希表时，将问题转换成：
+
+```text
+当前数字 nums[i]
+       ↓
+need = target - nums[i]
+       ↓
+哈希表中有没有 need？
+       ↓
+有 → 直接找到答案
+没有 → 保存当前数字和下标
+```
+
+时间复杂度降低到平均：
+
+```text
+O(n)
+```
+
+到了 C++，不需要像 C 一样自己实现 `HashNode`、哈希函数、冲突处理、线性探测。
+
+C++ 标准库提供了：
+
+```cpp
+unordered_map
+```
+
+可以直接使用。
+
+---
+
+# 二、unordered_map 是什么？
+
+`unordered_map` 是 C++ 标准库提供的**哈希表容器**。
+
+基本形式：
+
+```cpp
+unordered_map<key类型, value类型> 哈希表名称;
+```
+
+例如：
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+表示：
+
+```text
+key       value
+int       int
+```
+
+在 Two Sum 中：
+
+```text
+key   = 数组中的数字
+value = 这个数字对应的下标
+```
+
+例如：
+
+```text
+2  → 0
+7  → 1
+11 → 2
+15 → 3
+```
+
+所以：
+
+```cpp
+hash[2] = 0;
+hash[7] = 1;
+```
+
+---
+
+# 三、为什么叫 unordered_map？
+
+C++ 里面有两个容易混淆的容器：
+
+```cpp
+map
+unordered_map
+```
+
+它们都可以理解成：
+
+> key → value
+
+但是底层实现不同。
+
+### map
+
+通常基于红黑树。
+
+特点：
+
+```text
+key 会按照顺序排列
+```
+
+例如：
+
+```text
+1 → ...
+3 → ...
+5 → ...
+8 → ...
+```
+
+查找复杂度：
+
+```text
+O(log n)
+```
+
+---
+
+### unordered_map
+
+基于哈希表。
+
+特点：
+
+```text
+不保证 key 的顺序
+```
+
+例如遍历的时候可能出现：
+
+```text
+7 → ...
+2 → ...
+15 → ...
+11 → ...
+```
+
+不一定按照大小排列。
+
+平均查找：
+
+```text
+O(1)
+```
+
+所以 Two Sum 非常适合：
+
+```cpp
+unordered_map<int, int>
+```
+
+---
+
+# 四、创建 unordered_map
+
+最基本：
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+例如：
+
+```cpp
+unordered_map<string, int> age;
+```
+
+表示：
+
+```text
+string → int
+```
+
+可以存：
+
+```text
+"Tom" → 18
+"Jack" → 21
+```
+
+还可以：
+
+```cpp
+unordered_map<int, string> student;
+```
+
+表示：
+
+```text
+int → string
+```
+
+例如：
+
+```text
+1 → "Tom"
+2 → "Jack"
+```
+
+所以：
+
+```cpp
+unordered_map<键类型, 值类型>
+```
+
+是一个非常重要的语法。
+
+---
+
+# 五、Two Sum 中的核心定义
+
+你的代码：
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+实际上定义的是：
+
+```text
+数字 → 下标
+```
+
+例如遍历：
+
+```text
+nums = [2, 7, 11, 15]
+```
+
+经过几次保存后：
+
+```text
+hash
+
+2  → 0
+7  → 1
+11 → 2
+15 → 3
+```
+
+这就对应了你之前 C 语言自己定义的：
+
+```cpp
+typedef struct {
+    int index;
+    int key;
+    int used;
+} HashNode;
+```
+
+C 需要自己维护：
+
+```text
+key
+index
+used
+```
+
+C++：
+
+```cpp
+unordered_map<int, int>
+```
+
+这些事情由容器帮你处理。
+
+---
+
+# 六、插入数据
+
+最常见的写法：
+
+```cpp
+hash[key] = value;
+```
+
+例如：
+
+```cpp
+hash[2] = 0;
+```
+
+表示：
+
+```text
+2 → 0
+```
+
+Two Sum 中：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+意思就是：
+
+> 把当前数字 `nums[i]` 和它的下标 `i` 保存到哈希表。
+
+例如：
+
+```text
+i = 0
+nums[i] = 2
+```
+
+执行：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+实际上就是：
+
+```cpp
+hash[2] = 0;
+```
+
+---
+
+# 七、通过 key 获取 value
+
+例如：
+
+```cpp
+hash[2]
+```
+
+如果之前保存：
+
+```cpp
+hash[2] = 0;
+```
+
+那么：
+
+```cpp
+hash[2]
+```
+
+得到：
+
+```text
+0
+```
+
+所以 Two Sum：
+
+```cpp
+return {hash[need], i};
+```
+
+就是：
+
+```text
+hash[need] → 之前保存的下标
+i          → 当前下标
+```
+
+---
+
+# 八、find()：查找 key
+
+这是你这次最重要的新语法之一：
+
+```cpp
+hash.find(need)
+```
+
+表示：
+
+> 在 `hash` 中寻找 key 为 `need` 的元素。
+
+但是 `find()` **不是直接返回 value**。
+
+它返回的是一个：
+
+```text
+iterator（迭代器）
+```
+
+目前可以先把迭代器简单理解成：
+
+> “指向哈希表某个元素的位置”。
+
+---
+
+# 九、为什么要和 end() 比较？
+
+你写的是：
+
+```cpp
+if(hash.find(need) != hash.end())
+```
+
+这句话非常重要。
+
+可以拆开：
+
+```cpp
+hash.find(need)
+```
+
+↓
+
+去找 `need`
+
+如果找到：
+
+```text
+指向找到的元素
+```
+
+如果没找到：
+
+```text
+返回 hash.end()
+```
+
+所以：
+
+```cpp
+hash.find(need) != hash.end()
+```
+
+表示：
+
+> **找到了 `need`。**
+
+而：
+
+```cpp
+hash.find(need) == hash.end()
+```
+
+表示：
+
+> **没有找到 `need`。**
+
+---
+
+# 十、为什么不能直接写 hash[need] 判断？
+
+这是 C++ 哈希非常重要的一个坑。
+
+例如：
+
+```cpp
+if(hash[need])
+```
+
+看起来好像是在判断：
+
+> `need` 是否存在。
+
+实际上不可靠。
+
+因为：
+
+```cpp
+hash[need]
+```
+
+如果 `need` 不存在，`unordered_map` 可能会**自动创建这个 key**，并给它一个默认值。
+
+例如：
+
+```cpp
+unordered_map<int, int> hash;
+
+cout << hash[10];
+```
+
+原来没有 `10`。
+
+访问：
+
+```cpp
+hash[10]
+```
+
+以后，可能已经变成：
+
+```text
+10 → 0
+```
+
+所以：
+
+> `operator[]` 不适合单纯判断 key 是否存在。
+
+判断存在性推荐：
+
+```cpp
+hash.find(key) != hash.end()
+```
+
+或者：
+
+```cpp
+hash.count(key)
+```
+
+---
+
+# 十一、count()：判断 key 是否存在
+
+另一个非常常用的写法：
+
+```cpp
+hash.count(need)
+```
+
+对于 `unordered_map`：
+
+```text
+存在 → 1
+不存在 → 0
+```
+
+所以可以写：
+
+```cpp
+if(hash.count(need))
+{
+    return {hash[need], i};
+}
+```
+
+这和：
+
+```cpp
+if(hash.find(need) != hash.end())
+```
+
+在这里的效果类似。
+
+### 两种写法
+
+```cpp
+if(hash.find(need) != hash.end())
+```
+
+或者：
+
+```cpp
+if(hash.count(need))
+```
+
+初学阶段可以优先记：
+
+```text
+find() → 查找
+count() → 判断有没有
+```
+
+---
+
+# 十二、你的 C++ Two Sum 完整代码
+
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+
+        unordered_map<int, int> hash;
+
+        for(int i = 0; i < nums.size(); i++)
+        {
+            int need = target - nums[i];
+
+            if(hash.find(need) != hash.end())
+            {
+                return {hash[need], i};
+            }
+
+            hash[nums[i]] = i;
+        }
+
+        return {};
+    }
+};
+```
+
+---
+
+
+# 十三、为什么必须先查再存？
+
+你的代码：
+
+```cpp
+if(hash.find(need) != hash.end())
+{
+    return {hash[need], i};
+}
+
+hash[nums[i]] = i;
+```
+
+顺序是：
+
+```text
+① 查找
+② 保存
+```
+
+这个顺序非常重要。
+
+例如：
+
+```text
+nums = [3, 3]
+target = 6
+```
+
+第一次：
+
+```text
+3 → need = 3
+```
+
+哈希表为空：
+
+```text
+找不到
+```
+
+然后保存：
+
+```text
+3 → 0
+```
+
+第二次：
+
+```text
+3 → need = 3
+```
+
+现在找到：
+
+```text
+3 → 0
+```
+
+返回：
+
+```text
+[0,1]
+```
+
+如果先保存：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+再查找：
+
+```cpp
+hash.find(need)
+```
+
+第一次就可能找到自己：
+
+```text
+3 → 0
+```
+
+导致错误。
+
+所以 Two Sum 哈希法必须记住：
+
+> **先查 need，再保存当前 nums[i]。**
+
+---
+
+# 十四、C 手写哈希和 C++ unordered_map 的对应关系
+
+这是你从 C 转 C++ 最值得掌握的一部分。
+
+### C
+
+你之前自己定义：
+
+```cpp
+typedef struct {
+    int index;
+    int key;
+    int used;
+} HashNode;
+```
+
+然后：
+
+```text
+计算哈希位置
+↓
+处理负数
+↓
+处理冲突
+↓
+线性探测
+↓
+判断 key
+↓
+保存 index
+```
+
+---
+
+### C++
+
+直接：
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+然后：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+查：
+
+```cpp
+hash.find(need)
+```
+
+即可。
+
+所以：
+
+```text
+C：
+自己造哈希表
+
+C++：
+使用标准库提供的哈希表
+```
+
+但最重要的是：
+
+> **底层思想没有变。**
+
+你之前 C 里面学的：
+
+```text
+key → value
+```
+
+到了 C++ 依然是：
+
+```text
+key → value
+```
+
+只是 C++ 帮你完成了底层实现。
+
+---
+
+# 十五、unordered_map 常用语法总结
+
+## 1. 创建
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+---
+
+## 2. 插入 / 修改
+
+```cpp
+hash[key] = value;
+```
+
+例如：
+
+```cpp
+hash[10] = 100;
+```
+
+---
+
+## 3. 获取 value
+
+```cpp
+hash[key]
+```
+
+例如：
+
+```cpp
+int x = hash[10];
+```
+
+---
+
+## 4. 查找
+
+```cpp
+hash.find(key)
+```
+
+---
+
+## 5. 判断存在
+
+```cpp
+hash.find(key) != hash.end()
+```
+
+或者：
+
+```cpp
+hash.count(key)
+```
+
+---
+
+## 6. 删除
+
+```cpp
+hash.erase(key);
+```
+
+例如：
+
+```cpp
+hash.erase(10);
+```
+
+删除：
+
+```text
+10 → value
+```
+
+---
+
+## 7. 清空
+
+```cpp
+hash.clear();
+```
+
+---
+
+## 8. 大小
+
+```cpp
+hash.size()
+```
+
+例如：
+
+```cpp
+cout << hash.size();
+```
+
+---
+
+## 9. 是否为空
+
+```cpp
+hash.empty()
+```
+
+返回：
+
+```text
+true  → 空
+false → 不空
+```
+
+例如：
+
+```cpp
+if(hash.empty())
+{
+    cout << "空";
+}
+```
+
+---
+
+# 十六、unordered_map 的遍历
+
+以后你会经常遇到。
+
+最简单：
+
+```cpp
+for(auto x : hash)
+{
+    cout << x.first << " " << x.second;
+}
+```
+
+这里：
+
+```cpp
+x.first
+```
+
+表示：
+
+```text
+key
+```
+
+而：
+
+```cpp
+x.second
+```
+
+表示：
+
+```text
+value
+```
+
+例如：
+
+```text
+2 → 0
+7 → 1
+```
+
+那么：
+
+```text
+x.first  = 2
+x.second = 0
+```
+
+---
+
+# 十七、auto 是什么？
+
+上面的：
+
+```cpp
+auto x
+```
+
+也是 C++ 常见语法。
+
+`auto` 的意思可以简单理解为：
+
+> **让编译器自动判断变量类型。**
+
+例如：
+
+```cpp
+auto a = 10;
+```
+
+编译器知道：
+
+```text
+a 是 int
+```
+
+再比如：
+
+```cpp
+auto x = hash.find(need);
+```
+
+编译器自动知道：
+
+```text
+x 是一个迭代器
+```
+
+初学阶段你可以先把 `auto` 理解成：
+
+> **“类型太麻烦，让编译器帮我写。”**
+
+---
+
+# 十八、map 和 unordered_map 的区别
+
+| 特性       | map      | unordered_map |
+| -------- | -------- | ------------- |
+| 底层       | 红黑树      | 哈希表           |
+| key 有序   | ✅        | ❌             |
+| 平均查找     | O(log n) | O(1)          |
+| 插入       | O(log n) | 平均 O(1)       |
+| 删除       | O(log n) | 平均 O(1)       |
+| 是否适合快速查找 | 可以       | **非常适合**      |
+
+刷算法题时：
+
+```text
+需要快速查找某个 key
+        ↓
+优先考虑 unordered_map
+```
+
+如果：
+
+```text
+需要 key 自动保持有序
+```
+
+则考虑：
+
+```cpp
+map
+```
+
+---
+
+# 十九、unordered_map 的几个重要特点
+
+### ① 不保证顺序
+
+不要认为：
+
+```cpp
+hash[1]
+hash[2]
+hash[3]
+```
+
+遍历时一定是：
+
+```text
+1
+2
+3
+```
+
+`unordered_map` 不保证这个顺序。
+
+---
+
+### ② key 必须能够进行哈希
+
+常见类型例如：
+
+```cpp
+unordered_map<int, int>
+unordered_map<string, int>
+```
+
+都可以直接使用。
+
+---
+
+### ③ 一个 key 对应一个 value
+
+例如：
+
+```cpp
+hash[10] = 100;
+hash[10] = 200;
+```
+
+最终：
+
+```text
+10 → 200
+```
+
+后面的赋值会覆盖之前的 value。
+
+这点和 Two Sum 也有关。
+
+---
+
+# 二十、unordered_map 和 unordered_set 的区别
+
+以后刷题经常会遇到：
+
+```cpp
+unordered_map
+```
+
+和：
+
+```cpp
+unordered_set
+```
+
+可以简单理解：
+
+### unordered_map
+
+保存：
+
+```text
+key → value
+```
+
+例如：
+
+```text
+数字 → 下标
+```
+
+Two Sum：
+
+```cpp
+unordered_map<int, int>
+```
+
+---
+
+### unordered_set
+
+只保存：
+
+```text
+key
+```
+
+不保存对应的 value。
+
+例如：
+
+```cpp
+unordered_set<int> s;
+```
+
+里面：
+
+```text
+2
+7
+11
+15
+```
+
+主要用于：
+
+> 快速判断一个元素存不存在。
+
+所以可以简单记：
+
+```text
+map  → 键值对
+set  → 只有键
+```
+
+---
+
+# 二十一、这次 C++ 哈希容易犯的错误
+
+### 🟠 错误 1：不知道 `unordered_map` 的两个类型是什么意思
+
+```cpp
+unordered_map<int, int>
+```
+
+前面的：
+
+```text
+int
+```
+
+是 key。
+
+后面的：
+
+```text
+int
+```
+
+是 value。
+
+Two Sum 中：
+
+```text
+key   = 数字
+value = 下标
+```
+
+---
+
+### 🟠 错误 2：把 `find()` 当成 value
+
+错误理解：
+
+```cpp
+hash.find(need)
+```
+
+直接得到下标。
+
+实际上：
+
+```text
+find()
+↓
+返回迭代器
+```
+
+如果只是判断存在：
+
+```cpp
+hash.find(need) != hash.end()
+```
+
+如果需要 value：
+
+```cpp
+hash[need]
+```
+
+---
+
+### 🟠 错误 3：用 `hash[key]` 判断 key 是否存在
+
+不要简单写：
+
+```cpp
+if(hash[key])
+```
+
+因为访问 `hash[key]` 可能会创建这个 key。
+
+判断存在更推荐：
+
+```cpp
+hash.find(key) != hash.end()
+```
+
+或者：
+
+```cpp
+hash.count(key)
+```
+
+---
+
+### 🟠 错误 4：Two Sum 先存后查
+
+错误：
+
+```cpp
+hash[nums[i]] = i;
+
+if(hash.find(need) != hash.end())
+```
+
+正确：
+
+```cpp
+if(hash.find(need) != hash.end())
+{
+    return {hash[need], i};
+}
+
+hash[nums[i]] = i;
+```
+
+---
+
+### 🟡 错误 5：把 unordered_map 当成有序容器
+
+不能依赖：
+
+```text
+遍历顺序
+```
+
+如果题目要求按照 key 排序，需要考虑：
+
+```cpp
+map
+```
+
+或者自己排序。
+
+---
+
+# 二十二、复杂度
+
+Two Sum：
+
+```cpp
+unordered_map<int, int> hash;
+```
+
+每次查找：
+
+```cpp
+hash.find(need)
+```
+
+平均：
+
+```text
+O(1)
+```
+
+数组遍历：
+
+```text
+O(n)
+```
+
+所以整体平均时间复杂度：
+
+**O(n)**
+
+哈希表最多保存 `n` 个元素：
+
+**空间复杂度 O(n)**
+
+需要注意：
+
+> `unordered_map` 的 O(1) 是平均复杂度，不是严格保证的最坏情况。
+
+---
+
+
