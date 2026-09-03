@@ -2478,5 +2478,2247 @@ O(n)
 > `unordered_map` 的 O(1) 是平均复杂度，不是严格保证的最坏情况。
 
 ---
+# LeetCode 1：两数之和 —— Java 暴力 + 哈希学习总结
 
+
+## 1. 获取数组长度
+
+Java：
+
+```java
+nums.length
+```
+
+例如：
+
+```java
+int[] nums = {2,7,11,15};
+
+System.out.println(nums.length);
+```
+
+结果：
+
+```text
+4
+```
+
+这一点和 C++ 不一样。
+
+### C++
+
+```cpp
+nums.size()
+```
+
+### Java
+
+```java
+nums.length
+```
+
+注意：
+
+```java
+length
+```
+
+是属性，不是方法。
+
+所以不能写：
+
+```java
+nums.length()
+```
+
+---
+
+# 五、Java 暴力代码
+
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = i + 1; j < nums.length; j++)
+            {
+                if(nums[i] + nums[j] == target)
+                {
+                    return new int[]{i, j};
+                }
+            }
+        }
+
+        return new int[]{};
+    }
+}
+```
+
+这就是你前面 C++ 暴力版本对应的 Java 写法。
+
+---
+
+
+# 八、Java 如何返回两个下标
+
+C++：
+
+```cpp
+return {i, j};
+```
+
+Java：
+
+```java
+return new int[]{i, j};
+```
+
+这里：
+
+```java
+new int[]{i, j}
+```
+
+可以理解成：
+
+> 创建一个新的 `int` 数组，并把 `i` 和 `j` 放进去。
+
+例如：
+
+```java
+return new int[]{2, 5};
+```
+
+返回：
+
+```text
+[2,5]
+```
+
+---
+
+# 九、没有找到时怎么返回
+
+Java：
+
+```java
+return new int[]{};
+```
+
+表示返回一个空数组。
+
+例如：
+
+```text
+[]
+```
+
+这里不能写：
+
+```java
+return {};
+```
+
+这是 C++ 中比较常见的写法：
+
+```cpp
+return {};
+```
+
+Java 必须写：
+
+```java
+return new int[]{};
+```
+
+---
+
+# 十、Java 暴力的复杂度
+
+假设数组长度为 `n`。
+
+第一层循环：
+
+```text
+n
+```
+
+第二层循环：
+
+```text
+n
+```
+
+所以时间复杂度：
+
+```text
+O(n²)
+```
+
+空间复杂度：
+
+```text
+O(1)
+```
+
+因为除了返回结果之外，没有额外使用随着 `n` 增长的辅助数据结构。
+
+---
+
+
+# 十二、Java 的 HashMap
+
+Java 中最常用的哈希表之一：
+
+```java
+HashMap
+```
+
+需要：
+
+```java
+import java.util.HashMap;
+```
+
+LeetCode 有些环境会自动导入相关类，但自己写完整 Java 程序时应该注意导包。
+
+---
+
+# 十三、HashMap 的基本结构
+
+最重要的写法：
+
+```java
+HashMap<Integer, Integer> hash = new HashMap<>();
+```
+
+可以理解成：
+
+```text
+HashMap<键, 值>
+```
+
+这里：
+
+```java
+HashMap<Integer, Integer>
+```
+
+表示：
+
+```text
+key   → Integer
+value → Integer
+```
+
+在两数之和中，我们规定：
+
+```text
+数字 → 下标
+```
+
+例如：
+
+```text
+2 → 0
+7 → 1
+11 → 2
+15 → 3
+```
+
+---
+
+# 十四、为什么是 `Integer`，不是 `int`
+
+这里：
+
+```java
+HashMap<Integer, Integer>
+```
+
+使用的是：
+
+```java
+Integer
+```
+
+而不是：
+
+```java
+int
+```
+
+因为 Java 的泛型：
+
+```java
+<>
+```
+
+里面需要使用对象类型。
+
+Java 中：
+
+```text
+int
+```
+
+是基本数据类型。
+
+而：
+
+```text
+Integer
+```
+
+是 `int` 对应的包装类。
+
+可以先简单记：
+
+```text
+int      → 基本类型
+Integer  → int 的对象形式
+```
+
+因此：
+
+```java
+HashMap<Integer, Integer>
+```
+
+就是标准的：
+
+> 整数 → 整数
+
+哈希表。
+
+---
+
+# 十五、HashMap 的创建
+
+最常用：
+
+```java
+HashMap<Integer, Integer> hash = new HashMap<>();
+```
+
+右边：
+
+```java
+new HashMap<>()
+```
+
+表示创建一个新的 HashMap。
+
+这里的：
+
+```text
+<>
+```
+
+叫做钻石操作符（Diamond Operator）。
+
+Java 可以根据左边的类型推断右边的泛型类型。
+
+所以不用重复写：
+
+```java
+new HashMap<Integer, Integer>()
+```
+
+写：
+
+```java
+new HashMap<>()
+```
+
+即可。
+
+---
+
+# 十六、HashMap 最重要的三个操作
+
+做两数之和主要掌握三个：
+
+```java
+put()
+get()
+containsKey()
+```
+
+---
+
+## 1. `put()`
+
+```java
+hash.put(key, value);
+```
+
+作用：
+
+> 把一个键值对放入 HashMap。
+
+例如：
+
+```java
+hash.put(2, 0);
+```
+
+表示：
+
+```text
+2 → 0
+```
+
+也就是：
+
+```text
+数字 2 的下标是 0
+```
+
+---
+
+## 2. `get()`
+
+```java
+hash.get(key);
+```
+
+作用：
+
+> 根据 key 找 value。
+
+例如：
+
+```java
+hash.put(2, 0);
+
+int index = hash.get(2);
+```
+
+那么：
+
+```text
+index = 0
+```
+
+---
+
+## 3. `containsKey()`
+
+```java
+hash.containsKey(key)
+```
+
+作用：
+
+> 判断某个 key 是否存在。
+
+例如：
+
+```java
+if(hash.containsKey(2))
+```
+
+意思就是：
+
+> HashMap 里面有没有 2？
+
+返回：
+
+```text
+true
+```
+
+或者：
+
+```text
+false
+```
+
+---
+
+
+
+# 十八、Java 哈希最终代码
+
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+        HashMap<Integer, Integer> hash = new HashMap<>();
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            int need = target - nums[i];
+
+            if(hash.containsKey(need))
+            {
+                return new int[]{hash.get(need), i};
+            }
+
+            hash.put(nums[i], i);
+        }
+
+        return new int[]{};
+    }
+}
+```
+
+---
+
+
+
+# 二十二、Java HashMap 常用语法总结
+
+## 1. 创建
+
+```java
+HashMap<Integer, Integer> hash = new HashMap<>();
+```
+
+---
+
+## 2. 添加
+
+```java
+hash.put(10, 5);
+```
+
+表示：
+
+```text
+10 → 5
+```
+
+---
+
+## 3. 查询
+
+```java
+hash.get(10);
+```
+
+得到：
+
+```text
+5
+```
+
+---
+
+## 4. 判断 key 是否存在
+
+```java
+hash.containsKey(10);
+```
+
+返回：
+
+```text
+true
+```
+
+或者：
+
+```text
+false
+```
+
+---
+
+## 5. 删除
+
+```java
+hash.remove(10);
+```
+
+删除：
+
+```text
+10 → 5
+```
+
+---
+
+## 6. 清空
+
+```java
+hash.clear();
+```
+
+---
+
+## 7. 获取元素数量
+
+```java
+hash.size();
+```
+
+---
+
+## 8. 判断是否为空
+
+```java
+hash.isEmpty();
+```
+
+---
+
+# 二十三、一个非常容易踩的坑：`get()` 不等于判断存在
+
+不要这样写：
+
+```java
+if(hash.get(need) != null)
+```
+
+虽然某些情况下可以使用，但初学阶段更推荐：
+
+```java
+if(hash.containsKey(need))
+```
+
+因为：
+
+```text
+containsKey()
+```
+
+的含义非常明确：
+
+> 判断 key 是否存在。
+
+而：
+
+```java
+get()
+```
+
+的职责是：
+
+> 获取 key 对应的 value。
+
+所以最好分工：
+
+```java
+if(hash.containsKey(need))
+{
+    int index = hash.get(need);
+}
+```
+
+---
+
+# 二十四、HashMap 修改已有数据
+
+例如：
+
+```java
+hash.put(2, 0);
+hash.put(2, 5);
+```
+
+最终：
+
+```text
+2 → 5
+```
+
+第二次 `put` 会覆盖原来的 value。
+
+所以：
+
+```java
+put()
+```
+
+既可以：
+
+> 添加
+
+也可以：
+
+> 修改
+
+---
+
+# 二十五、HashMap 遍历
+
+如果想把 HashMap 中所有数据取出来：
+
+```java
+for(Map.Entry<Integer, Integer> entry : hash.entrySet())
+{
+    System.out.println(entry.getKey());
+    System.out.println(entry.getValue());
+}
+```
+
+这里出现几个新知识。
+
+---
+
+## `entrySet()`
+
+```java
+hash.entrySet()
+```
+
+表示获取 HashMap 中所有的：
+
+```text
+键值对
+```
+
+---
+
+## `Map.Entry`
+
+```java
+Map.Entry<Integer, Integer>
+```
+
+表示：
+
+> 一个键值对。
+
+例如：
+
+```text
+2 → 0
+```
+
+就是一个 Entry。
+
+---
+
+## `getKey()`
+
+```java
+entry.getKey()
+```
+
+获取：
+
+```text
+key
+```
+
+---
+
+## `getValue()`
+
+```java
+entry.getValue()
+```
+
+获取：
+
+```text
+value
+```
+
+---
+
+# 二十六、`for-each` 循环
+
+Java 中经常看到：
+
+```java
+for(int x : nums)
+{
+    System.out.println(x);
+}
+```
+
+意思是：
+
+> 依次取出数组中的每一个元素。
+
+例如：
+
+```text
+nums = [2,7,11]
+```
+
+依次：
+
+```text
+x = 2
+x = 7
+x = 11
+```
+
+---
+
+# 二十七、`for` 和 `for-each` 的区别
+
+如果需要下标：
+
+```java
+for(int i = 0; i < nums.length; i++)
+```
+
+因为：
+
+```java
+i
+```
+
+可以表示下标。
+
+如果只需要元素：
+
+```java
+for(int x : nums)
+```
+
+更加方便。
+
+两数之和需要返回下标，所以这里使用普通 `for` 更合适。
+
+---
+
+
+
+# 二十九、Java 与 C++ 两数之和语法对照
+
+## 数组
+
+C++：
+
+```cpp
+vector<int>& nums
+```
+
+Java：
+
+```java
+int[] nums
+```
+
+---
+
+## 数组长度
+
+C++：
+
+```cpp
+nums.size()
+```
+
+Java：
+
+```java
+nums.length
+```
+
+---
+
+## 哈希表
+
+C++：
+
+```cpp
+unordered_map<int,int> hash;
+```
+
+Java：
+
+```java
+HashMap<Integer,Integer> hash = new HashMap<>();
+```
+
+---
+
+## 插入
+
+C++：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+Java：
+
+```java
+hash.put(nums[i], i);
+```
+
+---
+
+## 获取
+
+C++：
+
+```cpp
+hash[need]
+```
+
+Java：
+
+```java
+hash.get(need)
+```
+
+---
+
+## 判断是否存在
+
+C++：
+
+```cpp
+hash.find(need) != hash.end()
+```
+
+Java：
+
+```java
+hash.containsKey(need)
+```
+
+---
+
+## 返回数组
+
+C++：
+
+```cpp
+return {i,j};
+```
+
+Java：
+
+```java
+return new int[]{i,j};
+```
+
+---
+
+# 三十、Java 暴力 vs Java 哈希
+
+| 方法      |   时间复杂度 | 空间复杂度 | 核心思想    |
+| ------- | ------: | ----: | ------- |
+| 暴力枚举    |   O(n²) |  O(1) | 两两比较    |
+| HashMap | O(n) 平均 |  O(n) | 数字 → 下标 |
+
+---
+
+# 三十一、两种算法的思维区别
+
+### 暴力：
+
+```text
+拿当前数字
+    ↓
+一个一个往后找
+    ↓
+找到目标
+```
+
+### 哈希：
+
+```text
+拿当前数字
+    ↓
+计算需要什么
+    ↓
+直接去 HashMap 查
+    ↓
+找到目标
+```
+
+本质上是：
+
+> **用额外的空间，换取更快的查询速度。**
+
+这就是非常经典的：
+
+```text
+空间换时间
+```
+
+---
+
+# 三十二、Java HashMap 与 C++ unordered_map 的关系
+
+你之前学习 C++：
+
+```cpp
+unordered_map<int,int>
+```
+
+现在 Java：
+
+```java
+HashMap<Integer,Integer>
+```
+
+虽然语法不同，但本质上做的是同一件事情：
+
+```text
+key → value
+```
+
+两数之和中：
+
+```text
+数字 → 下标
+```
+
+所以你可以把它们对应起来：
+
+```text
+C++ unordered_map
+        ↓
+Java HashMap
+        ↓
+都是哈希表
+        ↓
+都是通过 key 快速寻找 value
+```
+
+最大的区别只是：
+
+> C++ 和 Java 提供的标准库接口不同。
+
+---
+
+# 三十三、Java 中其他常见集合
+
+以后刷题还会经常遇到这些。
+
+## 1. ArrayList
+
+```java
+ArrayList<Integer> list = new ArrayList<>();
+```
+
+可以理解成：
+
+> Java 中比较常用的动态数组。
+
+类似 C++：
+
+```cpp
+vector<int>
+```
+
+---
+
+## 2. HashSet
+
+```java
+HashSet<Integer> set = new HashSet<>();
+```
+
+特点：
+
+> 只保存元素，不保存“元素 → 值”的对应关系。
+
+例如：
+
+```text
+{2,7,11}
+```
+
+如果只想判断：
+
+> 某个数字有没有出现过？
+
+HashSet 就非常适合。
+
+---
+
+## 3. HashMap
+
+```java
+HashMap<Integer,Integer> map = new HashMap<>();
+```
+
+保存：
+
+```text
+key → value
+```
+
+例如：
+
+```text
+数字 → 下标
+```
+
+---
+
+# 三十四、Java 集合简单对照
+
+| Java        | 作用      | 类似 C++          |
+| ----------- | ------- | --------------- |
+| `int[]`     | 固定长度数组  | 原生数组            |
+| `ArrayList` | 动态数组    | `vector`        |
+| `HashMap`   | 键值映射    | `unordered_map` |
+| `HashSet`   | 去重/判断存在 | `unordered_set` |
+| `TreeMap`   | 有序键值映射  | `map`           |
+| `TreeSet`   | 有序集合    | `set`           |
+
+这一部分以后刷题会大量用到。
+
+---
+
+# 三十五、这次 Java 学习中容易犯的错误
+
+### 🔴 1. 把 `.length` 写成 `.length()`
+
+错误：
+
+```java
+nums.length()
+```
+
+正确：
+
+```java
+nums.length
+```
+
+---
+
+### 🔴 2. Java 返回数组写成 C++ 形式
+
+错误：
+
+```java
+return {i,j};
+```
+
+正确：
+
+```java
+return new int[]{i,j};
+```
+
+---
+
+### 🔴 3. HashMap 用 `[]`
+
+错误：
+
+```java
+hash[nums[i]] = i;
+```
+
+这是 C++ 的写法。
+
+Java：
+
+```java
+hash.put(nums[i], i);
+```
+
+---
+
+### 🔴 4. Java 获取 HashMap 数据也不能使用 `[]`
+
+错误：
+
+```java
+hash[need]
+```
+
+正确：
+
+```java
+hash.get(need)
+```
+
+---
+
+### 🟠 5. 没有判断 key 是否存在就 `get`
+
+更推荐：
+
+```java
+if(hash.containsKey(need))
+{
+    int index = hash.get(need);
+}
+```
+
+---
+
+### 🟠 6. 哈希表先存后查
+
+容易造成：
+
+```text
+自己和自己匹配
+```
+
+正确顺序：
+
+```text
+查 → 存
+```
+
+---
+
+### 🟡 7. 忘记返回值
+
+方法：
+
+```java
+public int[] twoSum(...)
+```
+
+要求返回：
+
+```text
+int[]
+```
+
+所以所有执行路径最终都需要能够返回一个 `int[]`。
+
+例如：
+
+```java
+return new int[]{};
+```
+
+---
+# LeetCode 1：两数之和 —— Python 暴力 + 哈希学习总结
+# 三、Python 的 LeetCode 基本结构
+
+Python 的 LeetCode 通常写成：
+
+```python
+class Solution:
+    def twoSum(self, nums, target):
+        pass
+```
+
+---
+
+## 1. `class`
+
+```python
+class Solution:
+```
+
+表示定义一个类。
+
+LeetCode 通常规定：
+
+```text
+类名：Solution
+```
+
+所以直接使用即可。
+
+---
+
+## 2. `def`
+
+Python 定义函数使用：
+
+```python
+def 函数名(参数):
+```
+
+例如：
+
+```python
+def add(a, b):
+    return a + b
+```
+
+两数之和：
+
+```python
+def twoSum(self, nums, target):
+```
+
+表示定义一个叫：
+
+```text
+twoSum
+```
+
+的方法。
+
+---
+
+## 3. `self`
+
+```python
+def twoSum(self, nums, target):
+```
+
+这里的 `self` 表示当前对象。
+
+目前刷 LeetCode 时，可以先简单理解：
+
+> `Solution` 是一个类，`self` 是这个类当前的对象。
+
+现阶段不需要深入研究面向对象原理。
+
+---
+
+# 四、Python 与 C++/Java 最大的语法区别之一：缩进
+
+C++：
+
+```cpp
+if(condition)
+{
+    return;
+}
+```
+
+Java：
+
+```java
+if(condition)
+{
+    return;
+}
+```
+
+Python：
+
+```python
+if condition:
+    return
+```
+
+Python 不使用 `{}` 表示代码块。
+
+而是使用：
+
+> **冒号 `:` + 缩进**
+
+例如：
+
+```python
+if need in hash:
+    return [hash[need], x]
+```
+
+这里 `return` 必须缩进。
+
+---
+
+# 五、Python 的变量不需要声明类型
+
+C++：
+
+```cpp
+int need = target - nums[i];
+```
+
+Java：
+
+```java
+int need = target - nums[i];
+```
+
+Python：
+
+```python
+need = target - nums[x]
+```
+
+Python 不需要提前写：
+
+```text
+int
+double
+String
+```
+
+它会根据赋值自动判断类型。
+
+例如：
+
+```python
+a = 10
+```
+
+`a` 是整数。
+
+```python
+a = "hello"
+```
+
+`a` 又可以是字符串。
+
+这种方式称为：
+
+> 动态类型。
+
+---
+
+# 六、Python 的 list
+
+Python 最常用的数组结构之一是：
+
+```python
+list
+```
+
+例如：
+
+```python
+nums = [2,7,11,15]
+```
+
+可以暂时理解成：
+
+> Python 中的动态数组。
+
+访问元素：
+
+```python
+nums[0]
+```
+
+得到：
+
+```text
+2
+```
+
+访问：
+
+```python
+nums[2]
+```
+
+得到：
+
+```text
+11
+```
+
+---
+
+# 七、Python 获取数组长度：`len()`
+
+C++：
+
+```cpp
+nums.size()
+```
+
+Java：
+
+```java
+nums.length
+```
+
+Python：
+
+```python
+len(nums)
+```
+
+例如：
+
+```python
+nums = [2,7,11,15]
+
+len(nums)
+```
+
+结果：
+
+```text
+4
+```
+
+注意：
+
+```python
+len(nums)
+```
+
+是函数调用。
+
+不是：
+
+```python
+nums.length
+```
+
+也不是：
+
+```python
+nums.size()
+```
+
+---
+
+# 八、Python 的 `range()`
+
+例如：
+
+```python
+range(5)
+```
+
+表示：
+
+```text
+0
+1
+2
+3
+4
+```
+
+注意：
+
+> `range()` 的结束位置不包含。
+
+所以：
+
+```python
+range(len(nums))
+```
+
+正好可以用来遍历数组下标。
+
+例如：
+
+```python
+nums = [2,7,11,15]
+
+for x in range(len(nums)):
+    print(x)
+```
+
+输出：
+
+```text
+0
+1
+2
+3
+```
+
+---
+
+# 九、Python 暴力枚举
+
+
+# 十、Python 暴力代码
+
+最终写法：
+
+```python
+class Solution(object):
+
+    def twoSum(self, nums, target):
+
+        for x in range(len(nums)):
+
+            for y in range(x + 1, len(nums)):
+
+                if nums[x] + nums[y] == target:
+
+                    return [x, y]
+
+        return []
+```
+
+---
+
+
+# 十三、Python 返回两个下标
+
+Python：
+
+```python
+return [x, y]
+```
+
+这里：
+
+```python
+[x, y]
+```
+
+是一个 list。
+
+例如：
+
+```python
+return [0, 1]
+```
+
+得到：
+
+```text
+[0,1]
+```
+
+和 Java：
+
+```java
+return new int[]{0,1};
+```
+
+以及 C++：
+
+```cpp
+return {0,1};
+```
+
+作用类似。
+
+---
+
+# 十四、Python 暴力复杂度
+
+假设数组长度为 `n`。
+
+两个循环：
+
+```text
+第一层：O(n)
+第二层：O(n)
+```
+
+所以：
+
+```text
+时间复杂度：O(n²)
+空间复杂度：O(1)
+```
+
+核心特点：
+
+> 不需要额外的数据结构，但需要大量比较。
+
+---
+
+
+# 十六、Python 的哈希表：dict
+
+Python 中最常用的哈希表结构：
+
+```python
+dict
+```
+
+例如：
+
+```python
+hash = {}
+```
+
+表示：
+
+> 创建一个空字典。
+
+它对应前面学过的：
+
+```text
+C++：
+unordered_map
+
+Java：
+HashMap
+
+Python：
+dict
+```
+
+本质都是：
+
+```text
+key → value
+```
+
+---
+
+# 十七、Python dict 的基本操作
+
+## 1. 创建
+
+```python
+hash = {}
+```
+
+---
+
+## 2. 添加数据
+
+```python
+hash[2] = 0
+```
+
+表示：
+
+```text
+2 → 0
+```
+
+在两数之和中就是：
+
+```text
+数字 2 → 下标 0
+```
+
+---
+
+## 3. 获取数据
+
+```python
+hash[2]
+```
+
+得到：
+
+```text
+0
+```
+
+---
+
+## 4. 判断 key 是否存在
+
+Python 非常方便：
+
+```python
+if 2 in hash:
+```
+
+意思：
+
+> 判断 `2` 是否是字典中的 key。
+
+返回：
+
+```text
+True
+```
+
+或者：
+
+```text
+False
+```
+
+---
+
+
+# 二十一、最终 Python 哈希代码
+
+你最后自己修改完成的是：
+
+```python
+class Solution(object):
+
+    def twoSum(self, nums, target):
+
+        hash = {}
+
+        for x in range(len(nums)):
+
+            need = target - nums[x]
+
+            if need in hash:
+
+                return [hash[need], x]
+
+            hash[nums[x]] = x
+
+        return []
+```
+
+这份代码：
+
+> **算法正确，Python 语法正确，可以通过这道题。**
+
+
+# 二十四、Python dict 常用操作
+
+除了这道题使用的三个操作，还需要逐渐掌握下面这些。
+
+## 添加 / 修改
+
+```python
+hash[key] = value
+```
+
+---
+
+## 获取
+
+```python
+hash[key]
+```
+
+---
+
+## 判断是否存在
+
+```python
+key in hash
+```
+
+---
+
+## 删除
+
+```python
+del hash[key]
+```
+
+或者：
+
+```python
+hash.pop(key)
+```
+
+---
+
+## 获取长度
+
+```python
+len(hash)
+```
+
+---
+
+## 清空
+
+```python
+hash.clear()
+```
+
+---
+
+# 二十五、Python 字典遍历
+
+以后会经常看到：
+
+```python
+for key in hash:
+    print(key)
+```
+
+表示遍历所有 key。
+
+如果需要同时得到 key 和 value：
+
+```python
+for key, value in hash.items():
+    print(key, value)
+```
+
+例如：
+
+```python
+hash = {
+    2: 0,
+    7: 1
+}
+```
+
+遍历：
+
+```python
+for key, value in hash.items():
+    print(key, value)
+```
+
+得到：
+
+```text
+2 0
+7 1
+```
+
+---
+
+# 二十六、`items()` 是什么
+
+```python
+hash.items()
+```
+
+可以理解成：
+
+> 获取字典中的所有键值对。
+
+例如：
+
+```text
+2 → 0
+7 → 1
+```
+
+就可以同时得到：
+
+```text
+key = 2
+value = 0
+
+key = 7
+value = 1
+```
+
+因此：
+
+```python
+for key, value in hash.items():
+```
+
+非常常用。
+
+---
+
+# 二十七、Python `dict` 和 Java `HashMap` 对照
+
+| 操作 | Java              | Python        |
+| -- | ----------------- | ------------- |
+| 创建 | `new HashMap<>()` | `{}`          |
+| 添加 | `put(k,v)`        | `hash[k] = v` |
+| 获取 | `get(k)`          | `hash[k]`     |
+| 判断 | `containsKey(k)`  | `k in hash`   |
+| 删除 | `remove(k)`       | `del hash[k]` |
+| 清空 | `clear()`         | `clear()`     |
+| 数量 | `size()`          | `len(hash)`   |
+
+---
+
+# 二十八、Python 与 C++/Java 的两数之和对照
+
+## 数组长度
+
+C：
+
+```c
+numsSize
+```
+
+C++：
+
+```cpp
+nums.size()
+```
+
+Java：
+
+```java
+nums.length
+```
+
+Python：
+
+```python
+len(nums)
+```
+
+---
+
+## 哈希表
+
+C：
+
+```text
+自己实现 HashNode
+```
+
+C++：
+
+```cpp
+unordered_map<int,int>
+```
+
+Java：
+
+```java
+HashMap<Integer,Integer>
+```
+
+Python：
+
+```python
+hash = {}
+```
+
+---
+
+## 判断 key 是否存在
+
+C++：
+
+```cpp
+hash.find(need) != hash.end()
+```
+
+Java：
+
+```java
+hash.containsKey(need)
+```
+
+Python：
+
+```python
+need in hash
+```
+
+---
+
+## 获取 value
+
+C++：
+
+```cpp
+hash[need]
+```
+
+Java：
+
+```java
+hash.get(need)
+```
+
+Python：
+
+```python
+hash[need]
+```
+
+---
+
+## 保存
+
+C++：
+
+```cpp
+hash[nums[i]] = i;
+```
+
+Java：
+
+```java
+hash.put(nums[i], i);
+```
+
+Python：
+
+```python
+hash[nums[i]] = i
+```
+
+---
+
+## 返回两个下标
+
+C++：
+
+```cpp
+return {i,j};
+```
+
+Java：
+
+```java
+return new int[]{i,j};
+```
+
+Python：
+
+```python
+return [i,j]
+```
+
+---
+
+# 二十九、Python 的一些重要语法特点
+
+## 1. 不需要分号
+
+C/C++/Java：
+
+```cpp
+int a = 10;
+```
+
+Python：
+
+```python
+a = 10
+```
+
+一般不写：
+
+```python
+a = 10;
+```
+
+---
+
+## 2. 不使用 `{}` 表示代码块
+
+Python：
+
+```python
+if x > 0:
+    print(x)
+```
+
+---
+
+## 3. 冒号非常重要
+
+例如：
+
+```python
+if x > 0:
+```
+
+```python
+for x in nums:
+```
+
+```python
+def twoSum(...):
+```
+
+这些语句后面通常都有：
+
+```text
+:
+```
+
+---
+
+## 4. 缩进非常重要
+
+正确：
+
+```python
+if x > 0:
+    print(x)
+```
+
+错误：
+
+```python
+if x > 0:
+print(x)
+```
+
+Python 会根据缩进判断代码属于哪个代码块。
+
+---
+
+# 三十、Python `list` 的一些常见操作
+
+以后刷题也会经常用到。
+
+创建：
+
+```python
+nums = [1,2,3]
+```
+
+访问：
+
+```python
+nums[0]
+```
+
+修改：
+
+```python
+nums[0] = 10
+```
+
+添加：
+
+```python
+nums.append(4)
+```
+
+删除：
+
+```python
+nums.pop()
+```
+
+获取长度：
+
+```python
+len(nums)
+```
+
+判断元素是否存在：
+
+```python
+if 3 in nums:
+```
+
+---
+
+# 三十一、Python 中 `in` 的使用
+
+这次你已经用到了：
+
+```python
+if need in hash:
+```
+
+`in` 是 Python 非常重要的语法。
+
+例如 list：
+
+```python
+3 in [1,2,3]
+```
+
+结果：
+
+```text
+True
+```
+
+字典：
+
+```python
+3 in hash
+```
+
+判断的是：
+
+> **key 是否存在。**
+
+所以：
+
+```python
+if need in hash:
+```
+
+非常适合两数之和。
+
+---
+
+# 三十二、Python 暴力和哈希对比
+
+| 方法 |   时间复杂度 | 空间复杂度 | 思想      |
+| -- | ------: | ----: | ------- |
+| 暴力 |   O(n²) |  O(1) | 两两比较    |
+| 哈希 | O(n) 平均 |  O(n) | 记录并快速查询 |
+
+哈希方法本质上就是：
+
+> **用额外空间换取查询速度。**
+
+---
 
