@@ -1052,7 +1052,7 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
    == 判断相等
 ```
 
-#C++暴力法
+# C++暴力法
 和C没什么区别，需要的注意的地方主要是对vector的用法与理解
 ## 1. vector
 
