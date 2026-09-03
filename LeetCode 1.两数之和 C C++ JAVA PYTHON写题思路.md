@@ -111,7 +111,7 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
 2. **栈与堆的区别**：局部变量在栈上，随函数生灭；动态分配在堆上，由程序员掌控生命周期。
 3. **接口契约**：写代码不仅是实现逻辑，还要严格遵守函数签名定义的规则（如 `returnSize` 的赋值）。
 
-# LeetCode 1：Two Sum —— 哈希表解法学习记录
+# LeetCode 1：Two Sum —— C语言哈希表解法学习记录
 
 ## 一、从暴力法转向哈希法
 
@@ -1052,3 +1052,83 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
    == 判断相等
 ```
 
+#C++暴力法
+和C没什么区别，需要的注意的地方主要是对vector的用法与理解
+## 1. vector
+
+```cpp
+vector<int>
+```
+
+可以理解成：
+
+> C++ 中的动态数组。
+
+例如：
+
+```cpp
+vector<int> nums = {2, 7, 11, 15};
+```
+
+---
+
+## 2. vector 的下标访问
+
+和 C 数组一样：
+
+```cpp
+nums[0]
+nums[1]
+nums[2]
+```
+
+---
+
+## 3. vector 的长度
+
+C：
+
+```c
+numsSize
+```
+
+C++：
+
+```cpp
+nums.size()
+```
+
+---
+
+## 4. vector 直接返回
+
+C：
+
+```c
+int* result = malloc(...);
+result[0] = i;
+result[1] = j;
+return result;
+```
+
+C++：
+
+```cpp
+return {i, j};
+```
+
+---
+
+## 5. 空 vector
+
+```cpp
+return {};
+```
+
+表示：
+
+```text
+[]
+```
+
+---
