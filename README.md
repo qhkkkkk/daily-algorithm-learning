@@ -2,30 +2,46 @@
 
 按算法分类整理题解，记录从“写不出来”到理解代码的过程。主要使用 **C++、Java、Python 3**；两数之和另保留 C 语言专题。
 
-## 目录
+## 分类导航
 
-- [按算法分类](#按算法分类)
-- [全部题目](#全部题目)
+- [哈希表](#哈希表)
+- [双指针](#双指针)
 - [语言与基础知识](#语言与基础知识)
 - [如何使用与维护](#如何使用与维护)
 
-## 按算法分类
+目前已整理 **2 道题 · 2 个类别**。每个类别在下面单独列出，点击题名进入题解。
 
-每道题只设一个主目录，其他知识点以标签记录，避免同一篇题解复制多份。
+---
 
-| 分类 | 已整理题数 | 题目 |
-| --- | ---: | --- |
-| [哈希表](categories/README.md#哈希表) | 1 | [0001 两数之和](problems/hash-table/0001-two-sum/README.md) |
-| [双指针](categories/README.md#双指针) | 1 | [0283 移动零](problems/two-pointers/0283-move-zeroes/README.md) |
+## 哈希表
 
-其他分类的适用场景见[分类指南](categories/README.md)。只在收录题目时建立对应源码目录。
+记录出现过的值、次数或位置，用快速查询减少重复遍历。
 
-## 全部题目
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [1. 两数之和](problems/hash-table/0001-two-sum/README.md) | 🟢 简单 |
 
-| 题号 | 题目 | 难度 | 主分类 | 其他标签 | 解法与复杂度 | 源码 |
-| ---: | --- | --- | --- | --- | --- | --- |
-| 1 | [两数之和](problems/hash-table/0001-two-sum/README.md) | 简单 | 哈希表 | 数组、枚举、空间换时间 | 暴力 O(n²)；哈希平均 O(n) | [C++](problems/hash-table/0001-two-sum/cpp/hash.cpp) · [Java](problems/hash-table/0001-two-sum/java/hash/Solution.java) · [Python](problems/hash-table/0001-two-sum/python/hash.py) · [C](problems/hash-table/0001-two-sum/c/hash.c) |
-| 283 | [移动零](problems/two-pointers/0283-move-zeroes/README.md) | 简单 | 双指针 | 数组、快慢指针、原地修改 | O(n) 时间，O(1) 额外空间 | [C++](problems/two-pointers/0283-move-zeroes/cpp/solution.cpp) · [Java](problems/two-pointers/0283-move-zeroes/java/Solution.java) · [Python](problems/two-pointers/0283-move-zeroes/python/solution.py) |
+源码：[C++](problems/hash-table/0001-two-sum/cpp/hash.cpp) · [Java](problems/hash-table/0001-two-sum/java/hash/Solution.java) · [Python](problems/hash-table/0001-two-sum/python/hash.py) · [C](problems/hash-table/0001-two-sum/c/hash.c)
+
+[查看哈希表分类](categories/README.md#哈希表)
+
+---
+
+## 双指针
+
+用两个位置协同扫描；移动零使用快慢指针，一个找非零，一个记录放置位置。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [283. 移动零](problems/two-pointers/0283-move-zeroes/README.md) | 🟢 简单 |
+
+源码：[C++](problems/two-pointers/0283-move-zeroes/cpp/solution.cpp) · [Java](problems/two-pointers/0283-move-zeroes/java/Solution.java) · [Python](problems/two-pointers/0283-move-zeroes/python/solution.py)
+
+[查看双指针分类](categories/README.md#双指针)
+
+---
+
+其他分类的适用场景见[分类指南](categories/README.md)。新增题目时放进对应类别；新类别另开区块。
 
 ## 语言与基础知识
 
