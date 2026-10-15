@@ -7,6 +7,7 @@
 - [变量与代码块](#变量与代码块)
 - [数组与循环](#数组与循环)
 - [交换与返回值](#交换与返回值)
+- [最值函数与导入](#最值函数与导入)
 - [哈希表操作](#哈希表操作)
 - [哈希表遍历](#哈希表遍历)
 - [其他常见容器](#其他常见容器)
@@ -114,6 +115,34 @@ nums[pos], nums[i] = nums[i], nums[pos]
 | 返回两个下标 | `return {i, j};`，返回类型为 vector<int> | `return new int[]{i, j};` | `return [i, j]` |
 | 空结果 | `return {};` | `return new int[0];` | `return []` |
 | 无返回值方法 | `void` | `void` | 无显式 return 时返回 None |
+
+## 最值函数与导入
+
+| 操作 | Python | C++ | Java |
+| --- | --- | --- | --- |
+| 较小值 | `min(a, b)` | `std::min(a, b)` | `Math.min(a, b)` |
+| 较大值 | `max(a, b)` | `std::max(a, b)` | `Math.max(a, b)` |
+
+C++ 使用 `<algorithm>`，std 是命名空间；若已有 `using std::min;` 或 `using namespace std;` 等声明，可以省略相应的 std::。平台中能省略前缀，并不保证复制到独立程序后也能省略。
+
+Java 的 Math 是 java.lang 包中的类，默认可用；min/max 是其静态方法。通常不写 import，直接调用 `Math.min`、`Math.max`。这在 IDEA 和力扣中遵循同样的 Java 规则。[Math 官方文档](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html)。
+
+`import Math;` 不合法；`import java.lang.Math;` 是普通类导入，本来就可以省略，而且不会让 min/max 自动变为未限定的方法名。
+
+要直接写 min/max，需要静态导入：
+
+```java
+import static java.lang.Math.min;
+import static java.lang.Math.max;
+
+// 放在文件顶部、class 之前；此后方法中可写：
+// int smaller = min(3, 5);
+// int bigger = max(3, 5);
+```
+
+普通导入类与静态导入成员作用不同。初学时写 Math.min 更直观，静态导入作为可选语法。参见 [Java 静态导入说明](https://docs.oracle.com/javase/8/docs/technotes/guides/language/static-import.html)。
+
+具体面积公式、越界排错与三种语言完整解法见[盛最多水的容器](../problems/two-pointers/0011-container-with-most-water/README.md)。
 
 ## 哈希表操作
 
