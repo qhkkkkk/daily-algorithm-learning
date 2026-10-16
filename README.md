@@ -9,7 +9,7 @@
 - [语言与基础知识](#语言与基础知识)
 - [如何使用与维护](#如何使用与维护)
 
-目前已整理 **3 道题 · 2 个类别**。每个类别在下面单独列出，点击题名进入题解。
+目前已整理 **4 道题 · 2 个类别**。每个类别在下面单独列出，点击题名进入题解。
 
 ---
 
@@ -29,14 +29,16 @@
 
 ## 双指针
 
-用两个位置协同处理：盛最多水的容器使用左右指针向中间靠拢；移动零使用快慢指针同向扫描与整理。
+用两个位置协同处理：盛最多水的容器和三数之和使用左右指针；移动零使用快慢指针同向扫描与整理。
 
 | 状态 | 题目 | 难度 |
 | --- | --- | --- |
 | ✅ 已整理 | [11. 盛最多水的容器](problems/two-pointers/0011-container-with-most-water/README.md) | 🟠 中等 |
+| ✅ 已整理 | [15. 三数之和](problems/two-pointers/0015-3sum/README.md) | 🟠 中等 |
 | ✅ 已整理 | [283. 移动零](problems/two-pointers/0283-move-zeroes/README.md) | 🟢 简单 |
 
 - 盛最多水的容器源码：[C++](problems/two-pointers/0011-container-with-most-water/cpp/solution.cpp) · [Java](problems/two-pointers/0011-container-with-most-water/java/Solution.java) · [Python](problems/two-pointers/0011-container-with-most-water/python/solution.py)
+- 三数之和源码：[C++](problems/two-pointers/0015-3sum/cpp/solution.cpp) · [Java](problems/two-pointers/0015-3sum/java/Solution.java) · [Python](problems/two-pointers/0015-3sum/python/solution.py)
 - 移动零源码：[C++](problems/two-pointers/0283-move-zeroes/cpp/solution.cpp) · [Java](problems/two-pointers/0283-move-zeroes/java/Solution.java) · [Python](problems/two-pointers/0283-move-zeroes/python/solution.py)
 
 [查看双指针分类](categories/README.md#双指针)

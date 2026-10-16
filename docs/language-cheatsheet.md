@@ -6,6 +6,7 @@
 
 - [变量与代码块](#变量与代码块)
 - [数组与循环](#数组与循环)
+- [排序与二维结果](#排序与二维结果)
 - [交换与返回值](#交换与返回值)
 - [最值函数与导入](#最值函数与导入)
 - [哈希表操作](#哈希表操作)
@@ -85,6 +86,72 @@ for i, value in enumerate(nums):
 ```
 
 range(a, b) 包含 a，不包含 b。range(n) 从 0 到 n−1。range 提供下一个值，所以在 for 中写 i += 1 不能改变后续由 range 提供的遍历序列。
+
+## 排序与二维结果
+
+| 操作 | Python | C++ | Java |
+| --- | --- | --- | --- |
+| 排序 | `nums.sort()` | `std::sort(nums.begin(), nums.end())` | `Arrays.sort(nums)` |
+| 定义二维答案 | `ans = []` | `std::vector<std::vector<int>> ans;` | `List<List<Integer>> ans = new ArrayList<>();` |
+| 添加一组三个值 | `ans.append([a, b, c])` | `ans.push_back({a, b, c});` | `ans.add(Arrays.asList(a, b, c));` |
+
+这三种排序写法直接修改输入。Python 的 list.sort() 返回 None，不要写 nums = nums.sort()。这里的排序接口可直接用于刷题，不需要自己实现快速排序，也不应把接口名称与某一种具体排序算法等同。
+
+C++ 的 sort 来自 `<algorithm>`，vector 来自 `<vector>`；begin() 是起始迭代器，end() 是尾后迭代器，sort 处理的是 [begin, end) 区间。
+
+### C++的大括号与push_back
+
+二维 vector 中的每个元素是一个 `vector<int>`。因此：
+
+```cpp
+ans.push_back({a, b, c});
+```
+
+可以拆成：
+
+```cpp
+std::vector<int> group = {a, b, c};
+ans.push_back(group);
+```
+
+这里的大括号是列表初始化，初始化一个内层 vector；不是 Python 的字典或集合语法。push_back 的拼写固定，括号中传入要添加的单个元素；这个元素本身也可以是一个容器。
+
+### Java的Arrays与ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+// 以下写在方法内：
+List<List<Integer>> ans = new ArrayList<>();
+List<Integer> group = Arrays.asList(a, b, c);
+ans.add(group);
+```
+
+List 是接口，ArrayList 是动态列表实现，Arrays 是数组工具类。泛型使用 Integer 包装类型，不能写 `List<int>`。a、b、c 是 int 时会自动装箱。
+
+Arrays.asList 是固定的方法名；它把参数组织成列表。ans.add 负责把该列表放进外层答案。这不是必须组合使用的唯一方案，也可以 new 一个内层 ArrayList，再分别 add 三个数。
+
+asList 返回的列表长度固定，不能追加或删除元素，允许替换已有位置的值；不等于不可修改列表。若之后需要改变长度，可写 `new ArrayList<>(Arrays.asList(a, b, c))`。参见 [Arrays 官方文档](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#asList-T...-)。
+
+本题传入三个数的表达式，不是传整个 int[]。Arrays.asList(intArray) 不会逐个装箱 int，而会把这个基本类型数组视为一个元素。
+
+### 条件与循环排错
+
+Python 用 if / elif / else，C++ 和 Java 用 if / else if / else。互斥分支不要改成多个独立 if，以免移动指针后同一轮继续判断其他分支。
+
+Python and、C++/Java && 都从左到右短路求值，常用来先保护下标：
+
+```java
+if (i > 0 && nums[i] == nums[i - 1]) {
+    continue;
+}
+```
+
+每层 while 只在自己每轮开始时检查条件，内部修改变量后不会自动跳出当前外层循环体。嵌套去重循环要自己检查 left < right，并保证能推进指针。
+
+完整例子和本次错误分析见[三数之和题解](../problems/two-pointers/0015-3sum/README.md)。
 
 ## 交换与返回值
 

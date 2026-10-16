@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SUM = ROOT / "problems/hash-table/0001-two-sum"
 MOVE = ROOT / "problems/two-pointers/0283-move-zeroes"
 CONTAINER = ROOT / "problems/two-pointers/0011-container-with-most-water"
+THREE = ROOT / "problems/two-pointers/0015-3sum"
 FENCE = chr(96) * 3
 sys.dont_write_bytecode = True
 
@@ -242,7 +243,7 @@ def check_docs():
             if fragment and dest.suffix == ".md":
                 assert fragment in anchors(dest), (path, link, "missing anchor")
             checked += 1
-    for folder in (SUM, MOVE, CONTAINER):
+    for folder in (SUM, MOVE, CONTAINER, THREE):
         article = (folder / "README.md").read_text(encoding="utf-8")
         snippets = re.findall(FENCE + r"(?:cpp|java|python|c)\n(.*?)" + FENCE,
                               article, re.S)
@@ -286,6 +287,9 @@ def main():
                 missing.append(language + " (" + command + ")")
         from container_check import check_container
         check_container(temp, bool(shutil.which("java") and shutil.which("javac")),
+                        shutil.which(args.cxx))
+        from three_sum_check import check_three_sum
+        check_three_sum(temp, bool(shutil.which("java") and shutil.which("javac")),
                         shutil.which(args.cxx))
     for item in missing:
         print("SKIP " + item)
