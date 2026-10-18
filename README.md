@@ -6,17 +6,18 @@
 
 - [哈希表](#哈希表)
 - [双指针](#双指针)
+- [滑动窗口](#滑动窗口)
 - [语言与基础知识](#语言与基础知识)
 - [归纳与上传提示词](PROMPTS.md)
 - [如何使用与维护](#如何使用与维护)
 
-目前已整理 **4 道题 · 2 个类别**。每个类别在下面单独列出，点击题名进入题解。
+目前已整理 **5 道题 · 3 个类别**。每个类别在下面单独列出，点击题名进入题解。
 
 ---
 
 ## 哈希表
 
-记录出现过的值、次数或位置，用快速查询减少重复遍历。
+记录出现过的值、次数或位置，用快速查询减少重复遍历。本类收录 **1 道题**。
 
 | 状态 | 题目 | 难度 |
 | --- | --- | --- |
@@ -30,7 +31,7 @@
 
 ## 双指针
 
-用两个位置协同处理：盛最多水的容器和三数之和使用左右指针；移动零使用快慢指针同向扫描与整理。
+用两个位置协同处理：盛最多水的容器和三数之和使用左右指针；移动零使用快慢指针同向扫描与整理。本类收录 **3 道题**。
 
 | 状态 | 题目 | 难度 |
 | --- | --- | --- |
@@ -48,9 +49,24 @@
 
 其他分类的适用场景见[分类指南](categories/README.md)。新增题目时放进对应类别；新类别另开区块。
 
+## 滑动窗口
+
+维护一段满足条件的连续区间，复用已经扫描过的信息。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [3. 无重复字符的最长子串](problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md) | 🟠 中等 |
+
+源码：[C++](problems/sliding-window/0003-longest-substring-without-repeating-characters/cpp/solution.cpp) · [Java](problems/sliding-window/0003-longest-substring-without-repeating-characters/java/Solution.java) · [Python 3](problems/sliding-window/0003-longest-substring-without-repeating-characters/python/solution.py)
+
+[查看滑动窗口分类](categories/README.md#滑动窗口) · [入门：窗口变短为什么不丢答案](docs/sliding-window.md)
+
+---
+
 ## 语言与基础知识
 
-- [三种语言语法与常用接口对照](docs/language-cheatsheet.md)：循环、数组、交换、哈希表、返回值、传参。
+- [三种语言语法与常用接口对照](docs/language-cheatsheet.md)：循环、字符串、集合、哈希表、最值函数、返回值、传参。
+- [滑动窗口入门](docs/sliding-window.md)：当前窗口、历史答案、边界与集合同步。
 - [双指针入门](docs/two-pointers.md)：快慢指针与左右指针的区别。
 - [C 语言与哈希表学习补充](docs/c-and-hashing.md)：返回数组、内存、取模、冲突与线性探测。
 

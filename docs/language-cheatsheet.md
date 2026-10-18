@@ -6,9 +6,11 @@
 
 - [变量与代码块](#变量与代码块)
 - [数组与循环](#数组与循环)
+- [字符串与窗口长度](#字符串与窗口长度)
 - [排序与二维结果](#排序与二维结果)
 - [交换与返回值](#交换与返回值)
 - [最值函数与导入](#最值函数与导入)
+- [集合与成员判断](#集合与成员判断)
 - [哈希表操作](#哈希表操作)
 - [哈希表遍历](#哈希表遍历)
 - [其他常见容器](#其他常见容器)
@@ -86,6 +88,43 @@ for i, value in enumerate(nums):
 ```
 
 range(a, b) 包含 a，不包含 b。range(n) 从 0 到 n−1。range 提供下一个值，所以在 for 中写 i += 1 不能改变后续由 range 提供的遍历序列。
+
+## 字符串与窗口长度
+
+| 操作 | C++ string | Java String | Python str |
+| --- | --- | --- | --- |
+| 示例定义 | `std::string s = "abc";` | `String s = "abc";` | `s = "abc"` |
+| 长度 | `s.size()` 或 `s.length()` | `s.length()` | `len(s)` |
+| 第 i 个字符 | `s[i]` | `s.charAt(i)` | `s[i]` |
+| 尾部加字符 | `s.push_back('d')` | `s += "d"` 产生新字符串并赋值 | `s += "d"` 产生新字符串并重新绑定 |
+| 尾部加字符串 | `s += "de"` | `s += "de"` | `s += "de"` |
+| 去掉尾部字符 | 非空时 `s.pop_back()` | `s = s.substring(0, s.length() - 1)` | `s = s[:-1]` |
+| 去掉开头字符 | `s.erase(0, 1)` | `s = s.substring(1)` | `s = s[1:]` |
+
+C++ 需要 `<string>`。本表的 Java 删除示例要求非空；Python 对空串切片仍得到空串。Java/Python 字符串不可变，以上拼接、切片会产生新对象；滑动窗口通常只移动下标，不需要每轮修改原字符串。
+
+### 长度方法与数组属性
+
+Java 的 `arr.length` 是数组属性；`s.length()` 是 String 方法；`seen.size()` 是集合方法。String 不是数组，所以 `s[i]` 会报 `array required, but String found`；`s.length` 会查找不存在的字段。
+
+Java `String.length()` 无参数，返回 int；`charAt(i)` 接收下标，返回 char。Python `len(s)` 是内置函数，返回长度整数；字符串下标得到长度为 1 的字符串。C++ size/length 无参数，返回 string 的 `size_type`，是无符号整数类型。
+
+当输入长度在 int 范围内，可用 `int n = static_cast<int>(s.size());` 明确转换，避免与 int 下标比较时产生有符号/无符号警告。static_cast 是 C++ 转换语法，不是容器方法。
+
+闭区间 `[left, right]` 长度为 `right - left + 1`；半开区间 `[left, right)` 长度为 `right - left`。下标 0～2 共有三个字符。
+
+### C++字符串增删接口
+
+| 名称与所属类型 | 参数 | 作用与返回值 |
+| --- | --- | --- |
+| `std::string::push_back(c)` | 一个 char | 尾部追加字符，返回 void |
+| `std::string::pop_back()` | 无 | 删除尾部字符，调用前须非空，返回 void |
+| `std::string::erase(pos, count)` | 起点下标、删除数量 | 从 pos 开始删除至多 count 个字符，返回该字符串的引用 |
+| `std::string::size()` / `length()` | 无 | 返回字符单元数量，不是最后一个下标 |
+
+`string::erase(0, 1)` 的 0 是位置，`unordered_set<char>::erase('a')` 的 'a' 是元素值；同名方法的参数含义取决于所属类型。
+
+实例见[无重复字符的最长子串](../problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md#本次困惑与解答)。接口参考：[Java String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)。
 
 ## 排序与二维结果
 
@@ -194,6 +233,8 @@ C++ 使用 `<algorithm>`，std 是命名空间；若已有 `using std::min;` 或
 
 Java 的 Math 是 java.lang 包中的类，默认可用；min/max 是其静态方法。通常不写 import，直接调用 `Math.min`、`Math.max`。这在 IDEA 和力扣中遵循同样的 Java 规则。[Math 官方文档](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html)。
 
+`Max(...)` 和 `Max.max(...)` 都不是这里的标准调用。固定拼写为 `Math.max(a, b)`，参数 a、b 是待比较的两个数；本题传两个 int，返回较大的 int。Python 内置 max(a, b) 和 C++ `<algorithm>` 中的 std::max(a, b) 用途相同，所属名称不同。
+
 `import Math;` 不合法；`import java.lang.Math;` 是普通类导入，本来就可以省略，而且不会让 min/max 自动变为未限定的方法名。
 
 要直接写 min/max，需要静态导入：
@@ -210,6 +251,88 @@ import static java.lang.Math.max;
 普通导入类与静态导入成员作用不同。初学时写 Math.min 更直观，静态导入作为可选语法。参见 [Java 静态导入说明](https://docs.oracle.com/javase/8/docs/technotes/guides/language/static-import.html)。
 
 具体面积公式、越界排错与三种语言完整解法见[盛最多水的容器](../problems/two-pointers/0011-container-with-most-water/README.md)。
+
+## 集合与成员判断
+
+集合只保存元素，不保存“键到值”的映射，也不保留重复元素。它与下一节的哈希映射是两种用途。下面创建空的哈希集合：
+
+```cpp
+#include <unordered_set>
+std::unordered_set<char> seen;
+```
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+// 放在方法或类中：
+Set<Character> seen = new HashSet<>();
+```
+
+```python
+seen = set()
+```
+
+`seen` 是变量名；Python `set()` 调用内置集合类型创建空集合，`=` 完成赋值。`{}` 是空字典，`{"a", "b"}` 则是含两个字符串元素的集合。
+
+Java Set 是接口，HashSet 是实现；泛型 `<Character>` 表示字符包装类型，不能写 `<char>`。传入 char 时会自动装箱；`new HashSet<>()` 创建对象，右边尖括号的类型由左边推断。这些集合不按下标访问，算法不应依赖其迭代顺序。
+
+| 目的 | C++ unordered_set | Java HashSet | Python set |
+| --- | --- | --- | --- |
+| 添加元素 c | `seen.insert(c)` | `seen.add(c)` | `seen.add(c)` |
+| 判断存在 | `seen.count(c) > 0` | `seen.contains(c)` | `c in seen` |
+| 删除元素 c | `seen.erase(c)` | `seen.remove(c)` | `seen.remove(c)` |
+| 数量 | `seen.size()` | `seen.size()` | `len(seen)` |
+| 清空 | `seen.clear()` | `seen.clear()` | `seen.clear()` |
+
+### 参数和返回值
+
+下面指单个元素的常见重载，c 是要处理的元素，不是位置：
+
+| 接口归属 | 名称 | 返回值与作用 |
+| --- | --- | --- |
+| C++ `<unordered_set>` | `count(c)` | 返回 size_type 计数，元素唯一，所以只有 0 或 1，不是下标 |
+| C++ `<unordered_set>` | `insert(c)` | 返回包含迭代器和 bool 的 pair；bool 表示是否新插入，已有元素不会再增加一份 |
+| C++ `<unordered_set>` | `erase(c)` | 按键删除，返回实际删除数量，这里为 0 或 1，缺失时不报错 |
+| Java `java.util.Set` / `HashSet` | `contains(c)` | 返回 boolean，表示元素是否存在 |
+| Java `java.util.Set` / `HashSet` | `add(c)` | 新增成功返回 true，已有元素返回 false |
+| Java `java.util.Set` / `HashSet` | `remove(c)` | 找到并删除返回 true，不存在返回 false |
+| Python 内置 `set` | `add(c)` | 添加元素，返回 None，已有时不重复添加 |
+| Python 内置 `set` | `remove(c)` | 删除元素，返回 None，不存在则抛 KeyError |
+| Python 运算符 | `c in seen` | 返回 bool，判断是否存在 |
+
+C++ 的 `seen = {'a', 'b'}` 中 count('a') 为 1，count('c') 为 0；这不是统计 a 在原字符串中共出现几次。换成允许重复元素的 multiset 时，计数范围不同，不要把 0/1 推广到所有 count 方法。
+
+补充接口：Python `discard(c)` 在元素不存在时也可调用。本题维护了集合与窗口的一致性，源码使用 remove 即可。三种语言的 size/len 返回数量；clear 清空原集合，本题没有使用它。
+
+### 用集合维护字符串窗口
+
+```cpp
+while (seen.count(s[right]) > 0) {
+    seen.erase(s[left]);
+    ++left;
+}
+seen.insert(s[right]);
+```
+
+```java
+while (seen.contains(s.charAt(right))) {
+    seen.remove(s.charAt(left));
+    left++;
+}
+seen.add(s.charAt(right));
+```
+
+```python
+while s[right] in seen:
+    seen.remove(s[left])
+    left += 1
+seen.add(s[right])
+```
+
+条件查询右端候选字符，删除的是实际离开窗口的左端字符。本模板先解决冲突再插入；不能先插入候选字符，再原样照搬这个成员判断条件。
+
+完整推演见[第 3 题](../problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md)。接口依据：[Java Set](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)、[Python 集合类型](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset)、[C++ 标准草案 unordered_set](https://eel.is/c++draft/unord.set)。
 
 ## 哈希表操作
 
@@ -285,6 +408,8 @@ Map 存“键 -> 值”，Set 只保存元素。C++ map 通常由平衡树实现
 | Python | `nums` | 修改调用方可见的列表 | `nums = [...]` 不改变调用方变量 |
 
 Java 是按值传递，数组参数传递的是引用的值；不能笼统称为 C++ 式引用传递。Python 可理解为参数名与调用方暂时绑定同一个对象。移动零采用下标修改，三种语言均能满足原地要求。
+
+字符串另作区分：C++ `std::string s` 按值传参，通常复制传入的左值字符串；`const std::string& s` 是只读引用，可避免该复制。Java `String s` 传引用的值，Python 参数名绑定字符串对象；两种语言的字符串不可变。本题源码只读输入，返回一个长度整数，不返回新子串。计算空间时，应将 C++ 按值形参可能产生的副本与窗口集合分开说明。
 
 ## 常用官方参考
 

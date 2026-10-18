@@ -2,10 +2,13 @@
 
 [返回首页](../README.md)
 
+目前收录 **5 道题 · 3 个类别**；每道题只计入一个主分类，其余知识点作为标签。
+
 ## 目录
 
 - [哈希表](#哈希表)
 - [双指针](#双指针)
+- [滑动窗口](#滑动窗口)
 - [后续分类参考](#后续分类参考)
 
 ## 哈希表
@@ -33,6 +36,22 @@
 - 盛最多水的容器：较矮高度乘下标差，每轮排除较矮的一端。标签：数组、左右指针。
 - 三数之和：排序、固定一个数，再用左右指针查找另外两个数，并跳过重复答案。标签：数组、排序、左右指针、去重。
 - 移动零：一个位置扫描，另一个位置接收非零元素。标签：数组、快慢指针、原地修改。
+
+---
+
+## 滑动窗口
+
+维护连续子串或子数组，随着右端扫描增量处理；条件不满足时移动左端，恢复合法区间。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [3. 无重复字符的最长子串](../problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md) | 🟠 中等 |
+
+源码：[C++](../problems/sliding-window/0003-longest-substring-without-repeating-characters/cpp/solution.cpp) · [Java](../problems/sliding-window/0003-longest-substring-without-repeating-characters/java/Solution.java) · [Python 3](../problems/sliding-window/0003-longest-substring-without-repeating-characters/python/solution.py)
+
+核心提示：集合记录窗口内字符；新字符与任意位置重复时，从左端持续移出；合法后更新历史最大长度。标签：字符串、双指针、哈希集合。
+
+[滑动窗口入门](../docs/sliding-window.md)
 
 ---
 
