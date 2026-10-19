@@ -2,7 +2,7 @@
 
 [返回首页](../README.md)
 
-目前收录 **5 道题 · 3 个类别**；每道题只计入一个主分类，其余知识点作为标签。
+目前收录 **6 道题 · 3 个类别**；每道题只计入一个主分类，其余知识点作为标签。
 
 ## 目录
 
@@ -41,15 +41,19 @@
 
 ## 滑动窗口
 
-维护连续子串或子数组，随着右端扫描增量处理；条件不满足时移动左端，恢复合法区间。本类收录 **1 道题**。
+维护连续子串或子数组：可变窗口按条件收缩，固定窗口每次移出、移入各一个元素。本类收录 **2 道题**。
 
 | 状态 | 题目 | 难度 |
 | --- | --- | --- |
 | ✅ 已整理 | [3. 无重复字符的最长子串](../problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md) | 🟠 中等 |
+| ✅ 已整理 | [438. 找到字符串中所有字母异位词](../problems/sliding-window/0438-find-all-anagrams-in-a-string/README.md) | 🟠 中等 |
 
-源码：[C++](../problems/sliding-window/0003-longest-substring-without-repeating-characters/cpp/solution.cpp) · [Java](../problems/sliding-window/0003-longest-substring-without-repeating-characters/java/Solution.java) · [Python 3](../problems/sliding-window/0003-longest-substring-without-repeating-characters/python/solution.py)
+- 无重复字符的最长子串源码：[C++](../problems/sliding-window/0003-longest-substring-without-repeating-characters/cpp/solution.cpp) · [Java](../problems/sliding-window/0003-longest-substring-without-repeating-characters/java/Solution.java) · [Python 3](../problems/sliding-window/0003-longest-substring-without-repeating-characters/python/solution.py)
+- 字母异位词源码：[C++](../problems/sliding-window/0438-find-all-anagrams-in-a-string/cpp/solution.cpp) · [Java](../problems/sliding-window/0438-find-all-anagrams-in-a-string/java/Solution.java) · [Python 3](../problems/sliding-window/0438-find-all-anagrams-in-a-string/python/solution.py)
 
 核心提示：集合记录窗口内字符；新字符与任意位置重复时，从左端持续移出；合法后更新历史最大长度。标签：字符串、双指针、哈希集合。
+
+第 438 题核心提示：窗口长度等于 p 的长度，计数减去旧字符、加上新字符，再与目标频次比较；记录起点 right−m+1。标签：固定长度窗口、字母计数、数组比较。
 
 [滑动窗口入门](../docs/sliding-window.md)
 

@@ -17,6 +17,7 @@ MOVE = ROOT / "problems/two-pointers/0283-move-zeroes"
 CONTAINER = ROOT / "problems/two-pointers/0011-container-with-most-water"
 THREE = ROOT / "problems/two-pointers/0015-3sum"
 SUBSTRING = ROOT / "problems/sliding-window/0003-longest-substring-without-repeating-characters"
+ANAGRAM = ROOT / "problems/sliding-window/0438-find-all-anagrams-in-a-string"
 FENCE = chr(96) * 3
 sys.dont_write_bytecode = True
 
@@ -244,7 +245,7 @@ def check_docs():
             if fragment and dest.suffix == ".md":
                 assert fragment in anchors(dest), (path, link, "missing anchor")
             checked += 1
-    for folder in (SUM, MOVE, CONTAINER, THREE, SUBSTRING):
+    for folder in (SUM, MOVE, CONTAINER, THREE, SUBSTRING, ANAGRAM):
         article = (folder / "README.md").read_text(encoding="utf-8")
         snippets = re.findall(FENCE + r"(?:cpp|java|python|c)\n(.*?)" + FENCE,
                               article, re.S)
@@ -295,6 +296,9 @@ def main():
         from substring_check import check_substring
         check_substring(temp, bool(shutil.which("java") and shutil.which("javac")),
                         shutil.which(args.cxx))
+        from anagram_check import check_anagrams
+        check_anagrams(temp, bool(shutil.which("java") and shutil.which("javac")),
+                       shutil.which(args.cxx))
     for item in missing:
         print("SKIP " + item)
     if missing and args.require_all:

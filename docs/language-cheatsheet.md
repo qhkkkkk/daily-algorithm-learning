@@ -7,6 +7,7 @@
 - [变量与代码块](#变量与代码块)
 - [数组与循环](#数组与循环)
 - [字符串与窗口长度](#字符串与窗口长度)
+- [字符计数与数组比较](#字符计数与数组比较)
 - [排序与二维结果](#排序与二维结果)
 - [交换与返回值](#交换与返回值)
 - [最值函数与导入](#最值函数与导入)
@@ -125,6 +126,56 @@ Java `String.length()` 无参数，返回 int；`charAt(i)` 接收下标，返�
 `string::erase(0, 1)` 的 0 是位置，`unordered_set<char>::erase('a')` 的 'a' 是元素值；同名方法的参数含义取决于所属类型。
 
 实例见[无重复字符的最长子串](../problems/sliding-window/0003-longest-substring-without-repeating-characters/README.md#本次困惑与解答)。接口参考：[Java String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)。
+
+## 字符计数与数组比较
+
+本节对应[第 438 题：找到所有字母异位词](../problems/sliding-window/0438-find-all-anagrams-in-a-string/README.md)。
+
+### 26个位置如何对应字母
+
+```text
+下标：0  1  2 …… 25
+字母：a  b  c …… z
+值：  每个字母在当前字符串或窗口中出现的次数
+```
+
+Python 的 ord(ch) 返回字符的 Unicode 编码；小写英文字母连续，因此减去 ord('a') 就得到 0～25：
+
+```python
+index = ord(ch) - ord('a')
+counts[index] += 1
+```
+
+C++/Java 本题可使用字符差 `ch - 'a'`。这套 26 项计数依赖输入只有 a～z，不能直接推广为任意 Unicode 文本。参见 [Python ord](https://docs.python.org/3/library/functions.html#ord)。
+
+### 零初始化与内容比较
+
+| 操作 | Python list | C++ vector | Java int[] |
+| --- | --- | --- | --- |
+| 26 个零 | `counts = [0] * 26` | `std::vector<int> counts(26, 0);` | `int[] counts = new int[26];` |
+| 取字符串字符 | `s[i]` | `s[i]` | `s.charAt(i)` |
+| 次数加一 | `counts[index] += 1` | `counts[index]++;` | `counts[index]++;` |
+| 次数减一 | `counts[index] -= 1` | `counts[index]--;` | `counts[index]--;` |
+| 比较内容 | `window == target` | `window == target` | `Arrays.equals(window, target)` |
+
+Python 列表与 C++ vector 的相等比较会比较长度和对应元素。Java 数组的 == 比较引用，Arrays.equals 才用于比较本题 int[] 的元素。C++ 原生数组也不能直接照搬 vector 的内容比较写法。
+
+```java
+int[] a = new int[26];
+int[] b = new int[26];
+boolean sameObject = a == b;              // false
+boolean sameContents = Arrays.equals(a,b); // true
+```
+
+Java 需要 `import java.util.Arrays;`。[Arrays.equals 官方文档](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#equals-int:A-int:A-)。
+
+C++ 的 `counts(26, 0)` 与 `counts{26, 0}` 不同：前者是 26 个零，后者只有两个元素 26、0。Python 两份计数要分别创建；`window = target` 会让两个变量引用同一个列表，不是复制。
+
+### 固定窗口下标
+
+先统计前 m 个字符，再从 right = m 开始扫描。旧字符是 s[right−m]，新字符是 s[right]，新窗口起点是 right−m+1。读取旧字符不会删除字符串；修改的是计数数组。
+
+第 438 题返回所有起点，所以分别使用 `ans.append(start)`、`ans.push_back(start)`、`ans.add(start)`。其中 Java ans 定义为 `List<Integer> ans = new ArrayList<>();`。
 
 ## 排序与二维结果
 
