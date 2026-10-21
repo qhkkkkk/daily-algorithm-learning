@@ -2,13 +2,14 @@
 
 [返回首页](../README.md)
 
-目前收录 **6 道题 · 3 个类别**；每道题只计入一个主分类，其余知识点作为标签。
+目前收录 **7 道题 · 4 个类别**；每道题只计入一个主分类，其余知识点作为标签。
 
 ## 目录
 
 - [哈希表](#哈希表)
 - [双指针](#双指针)
 - [滑动窗口](#滑动窗口)
+- [前缀和](#前缀和)
 - [后续分类参考](#后续分类参考)
 
 ## 哈希表
@@ -56,6 +57,22 @@
 第 438 题核心提示：窗口长度等于 p 的长度，计数减去旧字符、加上新字符，再与目标频次比较；记录起点 right−m+1。标签：固定长度窗口、字母计数、数组比较。
 
 [滑动窗口入门](../docs/sliding-window.md)
+
+---
+
+## 前缀和
+
+用累计和之差表示连续区间，再按题目要求查询或统计。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [560. 和为 K 的子数组](../problems/prefix-sum/0560-subarray-sum-equals-k/README.md) | 🟠 中等 |
+
+源码：[C++](../problems/prefix-sum/0560-subarray-sum-equals-k/cpp/solution.cpp) · [Java](../problems/prefix-sum/0560-subarray-sum-equals-k/java/Solution.java) · [Python 3](../problems/prefix-sum/0560-subarray-sum-equals-k/python/solution.py)
+
+核心提示：累计 prefix，查询此前 prefix−k 的出现次数，再记录当前前缀；初始空前缀和 0 出现一次。标签：数组、哈希表、频次统计。
+
+[前缀和入门](../docs/prefix-sum.md)
 
 ---
 

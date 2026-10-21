@@ -13,6 +13,7 @@
 - [最值函数与导入](#最值函数与导入)
 - [集合与成员判断](#集合与成员判断)
 - [哈希表操作](#哈希表操作)
+- [哈希频次与默认值](#哈希频次与默认值)
 - [哈希表遍历](#哈希表遍历)
 - [其他常见容器](#其他常见容器)
 - [传参与原地修改](#传参与原地修改)
@@ -407,6 +408,63 @@ seen.add(s[right])
 - Python `seen[k]` 抛 KeyError；`seen.get(k)` 默认返回 None。del 和不带默认值的 pop 也要求键存在。
 
 两数之和需要区分“键不存在”和“下标恰好是 0”，所以不能拿读取值的真假当作存在判断。`in` 对字典检查 key，对列表则检查元素；列表中的查找通常是 O(n)，不能因为同样写 in 就认为都是平均 O(1)。
+
+## 哈希频次与默认值
+
+[第 560 题](../problems/prefix-sum/0560-subarray-sum-equals-k/README.md)用“前缀和值 → 此前出现次数”。不要将它与两数之和的“元素值 → 下标”混淆。
+
+| 操作 | Python dict | C++ unordered_map | Java Map / HashMap |
+| --- | --- | --- | --- |
+| 初始 0 出现一次 | `counts = {0: 1}` | `counts[0] = 1;` | `counts.put(0, 1);` |
+| 判断键存在 | `key in counts` | `counts.find(key) != counts.end()` | `counts.containsKey(key)` |
+| 不存在则读作0 | `counts.get(key, 0)` | find 检查后按需取值 | `counts.getOrDefault(key, 0)` |
+| 次数加一 | `counts[key] = counts.get(key, 0) + 1` | `counts[key]++;` | `counts.put(key, counts.getOrDefault(key, 0) + 1);` |
+
+### Python字典与get
+
+`{0: 1}` 是字典字面量，冒号左边是键，右边是值。空字典是 `{}`；空集合则写 `set()`。
+
+```python
+counts = {0: 1}
+counts.get(0, 0)  # 1：已有的值
+counts.get(7, 0)  # 0：键不存在时的默认值，不会插入键 7
+
+# 下列两种更新写法等价，选一种执行
+if key in counts:
+    counts[key] += 1
+else:
+    counts[key] = 1
+
+# 简写：
+# counts[key] = counts.get(key, 0) + 1
+```
+
+get 接收“键、默认值”。读取不改变表，赋值才写回。若不提供默认值，缺失时返回 None，不是自动返回 0。以上示意中的 key 需要由实际代码提供。
+
+### C++下标与find
+
+对 `std::unordered_map<int, int>`，缺失键的 `counts[key]` 会插入默认整数 0；随后 ++ 得到 1。这个行为不能直接推广到所有映射值类型。
+
+`find(key)` 不会插入键，返回迭代器；返回 end() 表示未找到。频次为 0 与键不存在是不同状态，不要用 `if (counts[key])` 代替单纯的存在判断。
+
+### Java默认值与写回
+
+```java
+Map<Integer, Integer> counts = new HashMap<>();
+counts.put(0, 1);
+int oldCount = counts.getOrDefault(key, 0);
+counts.put(key, oldCount + 1);
+```
+
+需要导入 java.util.Map、java.util.HashMap；key 由实际代码提供。Map 是接口，HashMap 是实现，泛型用包装类型 Integer。对这份只存整数次数的表，getOrDefault 返回已有次数或默认的 0；它不写入默认值，put 才新增或更新。
+
+Java 没有 `counts[key]` 语法。get(key) 在键不存在时返回 null，立即拆箱成 int 会出错。C++ 下标的“缺失则插入”不能直接照搬到 Java/Python。
+
+### +=与计数含义
+
+`ans += counts[need]` 表示把匹配次数加入答案；`counts[prefix] += 1` 表示记录一次新的前缀。两个变量承担不同工作，不能互相替换。
+
+第 560 题固定使用“累加当前元素 → 查询旧前缀 → 记录当前前缀”的顺序。先记录再查会在 k = 0 时把当前前缀匹配自己，从而误算空子数组。推导见[前缀和入门](prefix-sum.md#两条初始化与顺序规则)。
 
 ## 哈希表遍历
 

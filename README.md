@@ -7,11 +7,12 @@
 - [哈希表](#哈希表)
 - [双指针](#双指针)
 - [滑动窗口](#滑动窗口)
+- [前缀和](#前缀和)
 - [语言与基础知识](#语言与基础知识)
 - [归纳与上传提示词](PROMPTS.md)
 - [如何使用与维护](#如何使用与维护)
 
-目前已整理 **6 道题 · 3 个类别**。每个类别在下面单独列出，点击题名进入题解。
+目前已整理 **7 道题 · 4 个类别**。每个类别在下面单独列出，点击题名进入题解。
 
 ---
 
@@ -47,8 +48,6 @@
 
 ---
 
-其他分类的适用场景见[分类指南](categories/README.md)。新增题目时放进对应类别；新类别另开区块。
-
 ## 滑动窗口
 
 维护连续区间并复用信息：无重复字符题维护可变长度窗口，字母异位词题维护固定长度窗口与计数。本类收录 **2 道题**。
@@ -65,9 +64,26 @@
 
 ---
 
+## 前缀和
+
+用两个前缀和之差表示连续区间的和；结合哈希表频次统计满足条件的子数组。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [560. 和为 K 的子数组](problems/prefix-sum/0560-subarray-sum-equals-k/README.md) | 🟠 中等 |
+
+源码：[C++](problems/prefix-sum/0560-subarray-sum-equals-k/cpp/solution.cpp) · [Java](problems/prefix-sum/0560-subarray-sum-equals-k/java/Solution.java) · [Python 3](problems/prefix-sum/0560-subarray-sum-equals-k/python/solution.py)
+
+[查看前缀和分类](categories/README.md#前缀和) · [前缀和入门](docs/prefix-sum.md)
+
+---
+
+其他分类的适用场景见[分类指南](categories/README.md)。新增题目时放进对应类别；新类别另开区块。
+
 ## 语言与基础知识
 
 - [三种语言语法与常用接口对照](docs/language-cheatsheet.md)：循环、字符串、集合、哈希表、最值函数、返回值、传参。
+- [前缀和入门](docs/prefix-sum.md)：连续区间、频次计数、空前缀与先查后存。
 - [滑动窗口入门](docs/sliding-window.md)：可变与固定长度窗口、历史答案、边界与计数同步。
 - [双指针入门](docs/two-pointers.md)：快慢指针与左右指针的区别。
 - [C 语言与哈希表学习补充](docs/c-and-hashing.md)：返回数组、内存、取模、冲突与线性探测。
