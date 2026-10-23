@@ -10,6 +10,7 @@
 - [字符计数与数组比较](#字符计数与数组比较)
 - [排序与二维结果](#排序与二维结果)
 - [交换与返回值](#交换与返回值)
+- [赋值更新与历史最值](#赋值更新与历史最值)
 - [最值函数与导入](#最值函数与导入)
 - [集合与成员判断](#集合与成员判断)
 - [哈希表操作](#哈希表操作)
@@ -273,6 +274,30 @@ nums[pos], nums[i] = nums[i], nums[pos]
 | 返回两个下标 | `return {i, j};`，返回类型为 vector<int> | `return new int[]{i, j};` | `return [i, j]` |
 | 空结果 | `return {};` | `return new int[0];` | `return []` |
 | 无返回值方法 | `void` | `void` | 无显式 return 时返回 None |
+
+## 赋值更新与历史最值
+
+[第 53 题最大子数组和](../problems/dynamic-programming/0053-maximum-subarray/README.md)中：
+
+```python
+current = max(nums[i], current + nums[i])
+ans = max(ans, current)
+```
+
+第一行先用旧 current 计算右侧，再把结果赋给左侧 current；第二行读取更新后的 current。变量名相同，不代表它永远保存同一个值。
+
+例如 current 原来为 3，nums[i] 为 2，右侧得到 max(2, 3+2) = 5，然后 current 变成 5。下一轮再加入新数时，会使用 5，代表前面整段的和，并不限于两个元素。
+
+ans = max(ans, current) 是常见的“维护历史最大值”写法。max 只返回候选值中较大的那个，本身不会替你修改 ans，赋值才完成更新。
+
+| 目的 | Python | C++ | Java |
+| --- | --- | --- | --- |
+| 更新当前结果 | `current = max(x, current + x)` | `current = std::max(x, current + x);` | `current = Math.max(x, current + x);` |
+| 保留历史最大值 | `ans = max(ans, current)` | `ans = std::max(ans, current);` | `ans = Math.max(ans, current);` |
+
+上表中的 x、current、ans 由实际代码提供。C++ 需要 algorithm 头文件，Java 的 Math 在 java.lang 中无需额外导入；最大值接口的具体说明见下一节。
+
+初始化必须匹配题意：第 53 题要求子数组非空，因此 current 和 ans 都从 nums[0] 开始，循环从第二个元素开始。若 ans 设为 0，全负数时会错误保留一个不合法的空区间答案。
 
 ## 最值函数与导入
 

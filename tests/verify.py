@@ -19,6 +19,7 @@ THREE = ROOT / "problems/two-pointers/0015-3sum"
 SUBSTRING = ROOT / "problems/sliding-window/0003-longest-substring-without-repeating-characters"
 ANAGRAM = ROOT / "problems/sliding-window/0438-find-all-anagrams-in-a-string"
 SUBARRAY = ROOT / "problems/prefix-sum/0560-subarray-sum-equals-k"
+MAXIMUM = ROOT / "problems/dynamic-programming/0053-maximum-subarray"
 FENCE = chr(96) * 3
 sys.dont_write_bytecode = True
 
@@ -246,7 +247,7 @@ def check_docs():
             if fragment and dest.suffix == ".md":
                 assert fragment in anchors(dest), (path, link, "missing anchor")
             checked += 1
-    for folder in (SUM, MOVE, CONTAINER, THREE, SUBSTRING, ANAGRAM, SUBARRAY):
+    for folder in (SUM, MOVE, CONTAINER, THREE, SUBSTRING, ANAGRAM, SUBARRAY, MAXIMUM):
         article = (folder / "README.md").read_text(encoding="utf-8")
         snippets = re.findall(FENCE + r"(?:cpp|java|python|c)\n(.*?)" + FENCE,
                               article, re.S)
@@ -303,6 +304,9 @@ def main():
         from subarray_sum_check import check_subarray_sum
         check_subarray_sum(temp, bool(shutil.which("java") and shutil.which("javac")),
                            shutil.which(args.cxx))
+        from maximum_subarray_check import check_maximum_subarray
+        check_maximum_subarray(temp, bool(shutil.which("java") and shutil.which("javac")),
+                               shutil.which(args.cxx))
     for item in missing:
         print("SKIP " + item)
     if missing and args.require_all:

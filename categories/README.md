@@ -2,7 +2,7 @@
 
 [返回首页](../README.md)
 
-目前收录 **7 道题 · 4 个类别**；每道题只计入一个主分类，其余知识点作为标签。
+目前收录 **8 道题 · 5 个类别**；每道题只计入一个主分类，其余知识点作为标签。
 
 ## 目录
 
@@ -10,6 +10,7 @@
 - [双指针](#双指针)
 - [滑动窗口](#滑动窗口)
 - [前缀和](#前缀和)
+- [动态规划](#动态规划)
 - [后续分类参考](#后续分类参考)
 
 ## 哈希表
@@ -73,6 +74,22 @@
 核心提示：累计 prefix，查询此前 prefix−k 的出现次数，再记录当前前缀；初始空前缀和 0 出现一次。标签：数组、哈希表、频次统计。
 
 [前缀和入门](../docs/prefix-sum.md)
+
+---
+
+## 动态规划
+
+先定义子问题状态，再利用旧状态推导新状态；只依赖上一步时，可用滚动变量减少空间。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [53. 最大子数组和](../problems/dynamic-programming/0053-maximum-subarray/README.md) | 🟠 中等 |
+
+源码：[C++](../problems/dynamic-programming/0053-maximum-subarray/cpp/solution.cpp) · [Java](../problems/dynamic-programming/0053-maximum-subarray/java/Solution.java) · [Python 3](../problems/dynamic-programming/0053-maximum-subarray/python/solution.py)
+
+核心提示：比较从当前元素重新开始与接上旧 current，再用新 current 更新 ans；首元素初始化保证子数组非空。标签：数组、连续区间、滚动状态、贪心思路。
+
+[动态规划入门](../docs/dynamic-programming.md)
 
 ---
 

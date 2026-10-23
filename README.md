@@ -8,11 +8,12 @@
 - [双指针](#双指针)
 - [滑动窗口](#滑动窗口)
 - [前缀和](#前缀和)
+- [动态规划](#动态规划)
 - [语言与基础知识](#语言与基础知识)
 - [归纳与上传提示词](PROMPTS.md)
 - [如何使用与维护](#如何使用与维护)
 
-目前已整理 **7 道题 · 4 个类别**。每个类别在下面单独列出，点击题名进入题解。
+目前已整理 **8 道题 · 5 个类别**。每个类别在下面单独列出，点击题名进入题解。
 
 ---
 
@@ -78,11 +79,26 @@
 
 ---
 
+## 动态规划
+
+明确状态的含义，用已求出的状态计算下一步。最大子数组和保存“以当前位置结尾的最大和”，再更新历史答案。本类收录 **1 道题**。
+
+| 状态 | 题目 | 难度 |
+| --- | --- | --- |
+| ✅ 已整理 | [53. 最大子数组和](problems/dynamic-programming/0053-maximum-subarray/README.md) | 🟠 中等 |
+
+源码：[C++](problems/dynamic-programming/0053-maximum-subarray/cpp/solution.cpp) · [Java](problems/dynamic-programming/0053-maximum-subarray/java/Solution.java) · [Python 3](problems/dynamic-programming/0053-maximum-subarray/python/solution.py)
+
+[查看动态规划分类](categories/README.md#动态规划) · [动态规划入门](docs/dynamic-programming.md)
+
+---
+
 其他分类的适用场景见[分类指南](categories/README.md)。新增题目时放进对应类别；新类别另开区块。
 
 ## 语言与基础知识
 
 - [三种语言语法与常用接口对照](docs/language-cheatsheet.md)：循环、字符串、集合、哈希表、最值函数、返回值、传参。
+- [动态规划入门](docs/dynamic-programming.md)：状态含义、转移、初始化、滚动状态与历史答案。
 - [前缀和入门](docs/prefix-sum.md)：连续区间、频次计数、空前缀与先查后存。
 - [滑动窗口入门](docs/sliding-window.md)：可变与固定长度窗口、历史答案、边界与计数同步。
 - [双指针入门](docs/two-pointers.md)：快慢指针与左右指针的区别。
